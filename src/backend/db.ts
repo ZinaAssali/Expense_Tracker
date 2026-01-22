@@ -1,4 +1,4 @@
-import { Pool } from 'pg';
+import { Pool } from 'pg'; //pool manages reusable database connections, no new connection for every query
 
 export const pool = new Pool({
   connectionString: process.env.DATABASE_URL,

@@ -1,6 +1,7 @@
 {
   "type": "module",
   "scripts": {
+    "dev": "tsx src/backend/server.ts",
     "test": "vitest"
   },
   "dependencies": {

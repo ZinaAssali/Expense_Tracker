@@ -1,12 +1,16 @@
 
 import 'dotenv/config';
+import { pool } from './db.js';
+
+await pool.query('SELECT 1');
+console.log('DB check passed');
 
 //receives http request, runs functions in order, sends http response
 //components of express: import express module
 //create an application instance
 //define routes
 //start server
-import express = require('express');
+import express from 'express';
 import type { Application, Request, Response, NextFunction } from 'express';
 import { verifyPassword } from './auth.js';
 import { createUser, findUserByUsername, createExpense } from './store.js';
