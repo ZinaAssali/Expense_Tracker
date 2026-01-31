@@ -1,8 +1,17 @@
 process.env.JWT_SECRET = 'test_secret';
+process.env.NODE_ENV = 'test';
 
-import { describe, it, expect } from 'vitest';
+
+import { describe, it, expect, beforeEach, beforeAll } from 'vitest';
+import request from 'supertest';
+import app from '../app.js';
 import jwt from '../jwt.js';
 import { hashPassword, verifyPassword } from '../auth.js';
+import { pool } from '../db.js';
+
+beforeAll(async () => {
+  await resetTestDatabase();
+});
 
 describe('Authentication', () => {
   it('hashes a password', async () => {
@@ -43,3 +52,15 @@ describe('JWT', () => {
     expect(decoded).toBeUndefined();
   });
 });
+
+describe("Protected Routes", () => {
+  it('rejects access without JWT', async () => {
+    const response = await request(app).get('/expenses')
+    expect(response.status).toBe(401);
+  });
+});
+
+async function resetTestDatabase() {
+  await pool.query('TRUNCATE expenses RESTART IDENTITY CASCADE');
+  await pool.query('TRUNCATE users RESTART IDENTITY CASCADE');
+}
